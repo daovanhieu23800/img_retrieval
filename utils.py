@@ -18,15 +18,17 @@ class FeatureExtractor:
             'google/vit-base-patch16-224-in21k')
         self.model.eval()  # Set the model to evaluation mode
 
-    def __call__(self, image_path):
+    # def __call__(self, image_path):
+
+    def __call__(self, image):
         """
         Extract feature vector from an image using ViT.
         :param image_path: Path to the input image.
         :return: Normalized feature vector as a 1D numpy array.
         """
         # Load the image and preprocess it
-        image = Image.open(image_path).convert(
-            "RGB")  # Ensure the image is in RGB
+        # image = Image.open(image_path).convert(
+        #     "RGB")  # Ensure the image is in RGB
         inputs = self.feature_extractor(images=image, return_tensors="pt")
 
         # Perform inference
