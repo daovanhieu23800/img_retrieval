@@ -38,6 +38,7 @@ elif option == "Image":
         if st.button("Process Image"):
             # Send the uploaded image to FastAPI
             files = {"file": uploaded_image.getvalue()}
+            print(files)
             response = requests.post(f"{API_URL}/process-image/", files=files)
             if response.status_code == 200:
                 data = response.json()

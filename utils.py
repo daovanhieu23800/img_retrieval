@@ -5,17 +5,17 @@ from sklearn.preprocessing import normalize
 
 
 class FeatureExtractor:
-    def __init__(self, model_name="google/vit-base-patch16-224"):
+    def __init__(self, model_name="google/vit-base-patch16-224", device="cpu"):
         """
         Initialize the ViT feature extractor.
         :param model_name: Pre-trained ViT model name from Hugging Face.
         """
         # Load the feature extractor and model
-
+        self.device = device
         self.feature_extractor = ViTFeatureExtractor.from_pretrained(
             'google/vit-base-patch16-224-in21k')
         self.model = ViTModel.from_pretrained(
-            'google/vit-base-patch16-224-in21k')
+            'google/vit-base-patch16-224-in21k').to(self.device)
         self.model.eval()  # Set the model to evaluation mode
 
     # def __call__(self, image_path):
@@ -29,7 +29,7 @@ class FeatureExtractor:
         # Load the image and preprocess it
         # image = Image.open(image_path).convert(
         #     "RGB")  # Ensure the image is in RGB
-        inputs = self.feature_extractor(images=image, return_tensors="pt")
+        inputs = self.feature_extractor(images=image, return_tensors="pt").to(self.device)
 
         # Perform inference
         with torch.no_grad():
@@ -37,7 +37,7 @@ class FeatureExtractor:
 
         # Extract the feature vector from the last hidden state
         feature_vector = outputs.last_hidden_state.mean(
-            dim=1).squeeze().numpy()
+            dim=1).squeeze().cpu().numpy()
 
         # Normalize the feature vector
         return normalize(feature_vector.reshape(1, -1), norm="l2").flatten()

@@ -1,0 +1,1 @@
+locust --processes 2
