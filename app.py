@@ -9,7 +9,7 @@ API_URL = "http://127.0.0.1:8000"
 st.title("Streamlit with FastAPI")
 
 # Choose between text or image input
-option = st.selectbox("Choose input type:", ["Text", "Image"])
+option = st.selectbox("Choose input type:", ["Image"])
 
 if option == "Text":
     text_input = st.text_input("Enter your text here:")
@@ -38,7 +38,7 @@ elif option == "Image":
         if st.button("Process Image"):
             # Send the uploaded image to FastAPI
             files = {"file": uploaded_image.getvalue()}
-            print(files)
+            # print(files)
             response = requests.post(f"{API_URL}/process-image/", files=files)
             if response.status_code == 200:
                 data = response.json()

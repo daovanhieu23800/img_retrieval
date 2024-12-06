@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s  # Default scrape interval
+
+scrape_configs:
+  - job_name: 'fastapi'  # A label for the job
+    static_configs:
+      - targets:
+          - '192.168.1.21:8000'  # FastAPI app
+  - job_name: 'node'  # A label for the job
+    static_configs:
+      - targets:
+          - '192.168.1.21:9182'  # FastAPI app
+
+
+
+

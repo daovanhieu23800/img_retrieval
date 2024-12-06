@@ -4,6 +4,7 @@ from qdrant_client.models import PointStruct
 from utils import FeatureExtractor
 import os
 import uuid  # To generate unique IDs for each point
+import time
 
 
 class VectorDatabase():
@@ -13,18 +14,24 @@ class VectorDatabase():
         self.collection_name = "img_embed"
         # self.populate_data()
 
-    def query(self, image_embedding):
+    def query(self, image_embedding, brute_force=False):
         # image_embedding = self.feature_extractor(filepath).tolist()
+        start_time = time.time()
+
         search_result = self.qdrant_client.query_points(
             collection_name=self.collection_name,
             query=image_embedding,
             with_payload=True,
-            limit=5
-        ).points
+            limit=5,
+            search_params=models.SearchParams(exact=brute_force)
+        )
+        end_time = time.time()
 
+# Calculate elapsed time
+        elapsed_time = end_time - start_time
+        print(f"Search compl123ete1d in {elapsed_time:.4f} seconds.")
         # print(search_result)
         return search_result
-
     # def populate_data(self):
     #     # Check if collection exists, if not create it
     #     try:
